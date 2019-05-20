@@ -75,6 +75,9 @@ abstract class RcRoute extends StatelessWidget {
         uri.pathSegments.isNotEmpty &&
         uri.pathSegments.first.startsWith(':')) {
       routeParams.path = pathUri;
+      routeParams.queryParams
+        ..clear()
+        ..addAll(pathUri.queryParameters);
       return true;
     }
     for (int i = 0; i < pathUri.pathSegments.length; i++) {
@@ -92,6 +95,9 @@ abstract class RcRoute extends StatelessWidget {
     }
     if (isValid) {
       routeParams.path = pathUri;
+      routeParams.queryParams
+        ..clear()
+        ..addAll(pathUri.queryParameters);
       return true;
     }
     routeParams.clear();
