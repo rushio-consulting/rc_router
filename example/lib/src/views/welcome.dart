@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rc_router/rc_router.dart';
+import 'package:rc_router_example/src/routes/routes.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key key}) : super(key: key);
@@ -31,7 +33,15 @@ class _WelcomePageState extends State<WelcomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.new_releases),
         onPressed: () {
-          Navigator.of(context).pushNamed('/greetings/kevin');
+          print(RcRoute.generateRoute(
+            GrettingsRoute.routePath,
+            pathParams: {'name': 'kevin'},
+          ));
+          Navigator.of(context).pushNamed(
+            GrettingsRoute.generateRoute(
+              'kevin'
+            ),
+          );
         },
       ),
     );

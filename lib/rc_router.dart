@@ -37,6 +37,24 @@ class RcRouteParams {
 typedef Route RcRouteBuilder(RouteSettings routeSettings);
 
 abstract class RcRoute extends StatelessWidget {
+  static String generateRoute(String path, {Map<String, String> pathParams, Map<String, String> queryParams}) {
+    pathParams ??= {};
+    queryParams ??= {};
+    String _path = path;
+    for (final key in pathParams.keys) {
+      _path = _path.replaceFirst(':$key', pathParams[key]);
+    }
+    final sb = StringBuffer();
+    for (final key in queryParams?.keys) {
+      sb.write('$key=${queryParams[key]}');
+    }
+    if (sb.isNotEmpty) {
+    return '$_path?${sb.toString()}';
+
+    }
+    return _path;
+  }
+
   final String _path;
   final RcRouteParams routeParams;
 

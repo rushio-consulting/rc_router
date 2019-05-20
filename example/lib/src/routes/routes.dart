@@ -22,6 +22,10 @@ class HomeRoute extends RcRoute {
 class GrettingsRoute extends RcRoute {
   static String routePath = '/greetings/:name';
 
+  static String generateRoute(String name) {
+    return RcRoute.generateRoute(routePath, pathParams: {'name': name});
+  }
+
   GrettingsRoute() : super(path: GrettingsRoute.routePath);
 
   @override
