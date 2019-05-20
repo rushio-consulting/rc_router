@@ -1,14 +1,58 @@
 # rc_router
 
-A new Flutter package project.
+A simple but powerful router for Flutter
 
-## Getting Started
+## Usage
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+### Create a custom RcRoute
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+The code below is based on what you have in the example app
+```dart
+class HomeRoute extends RcRoute {
+  static String routePath = '/';
+
+  HomeRoute() : super(path: HomeRoute.routePath);
+
+  @override
+  Widget build(BuildContext context) {
+    final name = 'anonymous';
+    return Provider<String>.value(
+      value: name,
+      child: WelcomePage(),
+    );
+  }
+}
+```
+
+### Create RcRoutes
+
+```dart
+...
+  @override
+  void initState() {
+    super.initState();
+    rcRoutes = RcRoutes(
+      notFoundRoute: generateNotFound,
+      routes: [
+        HomeRoute(),
+        GrettingsRoute(),
+      ],
+    );
+  }
+...
+```
+
+### Use RcRoutes
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Flutter Demo',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    onGenerateRoute: rcRoutes.onGeneratedRoute,
+  );
+}
+```

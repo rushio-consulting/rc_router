@@ -13,13 +13,20 @@ class RcRoutes {
   RcRoutes({this.notFoundRoute, @required List<RcRoute> routes})
       : this.routes = routes ?? [];
 
+  /// Generate the route based on [routeSettings]
+  /// If a valid route is found in [routes] it will return it
+  /// Else if [notFoundRoute] exist it will show it
+  /// Else return null
   Route onGeneratedRoute(RouteSettings routeSettings) {
     for (final r in routes) {
       if (r.routeNameMatchPath(routeSettings.name)) {
         return r.routeBuilder(routeSettings);
       }
     }
-    return notFoundRoute(routeSettings);
+    if (notFoundRoute != null) {
+      return notFoundRoute(routeSettings);
+    }
+    return null;
   }
 }
 
@@ -37,7 +44,9 @@ class RcRouteParams {
 typedef Route RcRouteBuilder(RouteSettings routeSettings);
 
 abstract class RcRoute extends StatelessWidget {
-  static String generateRoute(String path, {Map<String, String> pathParams, Map<String, String> queryParams}) {
+  /// helper to generate Url from the [path] combined with [pathParams] and [queryParams]
+  static String generateRoute(String path,
+      {Map<String, String> pathParams, Map<String, String> queryParams}) {
     pathParams ??= {};
     queryParams ??= {};
     String _path = path;
@@ -49,8 +58,7 @@ abstract class RcRoute extends StatelessWidget {
       sb.write('$key=${queryParams[key]}');
     }
     if (sb.isNotEmpty) {
-    return '$_path?${sb.toString()}';
-
+      return '$_path?${sb.toString()}';
     }
     return _path;
   }
