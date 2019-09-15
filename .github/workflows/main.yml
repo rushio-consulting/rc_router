@@ -7,7 +7,7 @@ on:
     
 
 jobs:
-  analyze:
+  flutter:
     runs-on: ubuntu-latest
     container:
       image: cirrusci/flutter:stable
@@ -21,5 +21,6 @@ jobs:
       run: flutter analyze --suppress-analytics
     - name: Flutter test
       run: flutter test --coverage
-    - name: Push coverage
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}} #required
