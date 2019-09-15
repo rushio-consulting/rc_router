@@ -18,9 +18,9 @@ class RcRoutes {
   /// Else if [notFoundRoute] exist it will show it
   /// Else return null
   Route onGeneratedRoute(RouteSettings routeSettings) {
-    for (final r in routes) {
-      if (r.routeNameMatchPath(routeSettings.name)) {
-        return r.routeBuilder(routeSettings);
+    for (final route in routes) {
+      if (route.routeNameMatchPath(routeSettings.name)) {
+        return route.routeBuilder(routeSettings);
       }
     }
     if (notFoundRoute != null) {
@@ -56,6 +56,9 @@ abstract class RcRoute extends StatelessWidget {
     final sb = StringBuffer();
     for (final key in queryParams?.keys) {
       sb.write('$key=${queryParams[key]}');
+      if (key != queryParams.keys.last) {
+        sb.write('&');
+      }
     }
     if (sb.isNotEmpty) {
       return '$_path?${sb.toString()}';
@@ -92,20 +95,11 @@ abstract class RcRoute extends StatelessWidget {
     );
   }
 
+  @visibleForTesting
   bool routeNameMatchPath(String routeName) {
     final pathUri = Uri.parse(routeName);
     final uri = Uri.parse(path);
-    bool isValid = pathUri.pathSegments.isNotEmpty ||
-        (pathUri.pathSegments.length == uri.pathSegments.length);
-    if (pathUri.pathSegments.isEmpty &&
-        uri.pathSegments.isNotEmpty &&
-        uri.pathSegments.first.startsWith(':')) {
-      routeParams.path = pathUri;
-      routeParams.queryParams
-        ..clear()
-        ..addAll(pathUri.queryParameters);
-      return true;
-    }
+    bool isValid = pathUri.pathSegments.length == uri.pathSegments.length;
     for (int i = 0; i < pathUri.pathSegments.length; i++) {
       if (uri.pathSegments.length <= i) {
         isValid = false;
