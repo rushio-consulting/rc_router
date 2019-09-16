@@ -11,16 +11,15 @@ on:
 jobs:
   flutter:
     runs-on: ubuntu-latest
-    container:
-      image: cirrusci/flutter:stable
 
     steps:
     - uses: actions/checkout@v1
-    - run: sudo chown -R cirrus:cirrus ./ /github/home/
-    - name: Flutter pub get
-      run: flutter packages get
-    - name: Flutter analyze --suppress-analytics
-      run: flutter analyze --suppress-analytics
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
     - name: Flutter test
       run: flutter test --coverage
     - uses: codecov/codecov-action@v1.0.2
