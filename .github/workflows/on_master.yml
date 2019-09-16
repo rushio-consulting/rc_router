@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '*.dart'
-      - '*.g.dart'
-      - '*.yaml'
 
 jobs:
   flutter:
