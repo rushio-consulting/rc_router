@@ -24,6 +24,8 @@ jobs:
       run: ls -la ../../
     - name: echo $HOME
       run: echo $HOME
+    - name: ls $HOME
+      run: ls -la $HOME
     - name: Add credentials
       run: echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
     - name: Publish
