@@ -20,10 +20,10 @@ jobs:
       run: flutter packages get
     - name: ls -la ../
       run: ls -la ../
+    - name: ls -la ../../
+      run: ls -la ../../
     - name: echo $HOME
       run: echo $HOME
-    - name: echo ENV
-      run: echo $ENV
     - name: Add credentials
       run: echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
     - name: Publish
