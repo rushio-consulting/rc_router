@@ -16,6 +16,8 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: 'stable'
+    - name: Log env
+      run: env
     - name: Log fake credentials
       run: echo $PUB_CREDENTIALS
     - name: Add credentials
