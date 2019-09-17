@@ -12,6 +12,8 @@ jobs:
       
     steps:
     - uses: actions/checkout@v1
+    - name: Create folder
+      run: mkdir ~/.pub-cache
     - name: Add credentials
       run: echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
     - name: Publish
