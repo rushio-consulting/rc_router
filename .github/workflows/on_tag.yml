@@ -24,8 +24,10 @@ jobs:
       run: ls -la ../../
     - name: echo $HOME
       run: echo $HOME
-    - name: ls $HOME
-      run: ls -la $HOME
+    - name: ls $HOME/.flutter
+      run: ls -la $HOME/.flutter
+    - name: ls $HOME/work
+      run: ls -la $HOME/work
     - name: Add credentials
       run: echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
     - name: Publish
