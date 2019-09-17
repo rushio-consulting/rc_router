@@ -17,5 +17,5 @@ jobs:
     - name: Add credentials
       run: echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
     - name: Publish
-      run: pub publish --dry-run
+      run: pub publish --force
 
