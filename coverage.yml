@@ -8,6 +8,8 @@ coverage:
 ignore:
   - "lib/src/**/*.g.dart"
 
+fixes:
+  - "::coverage/"         # move root   e.g., "path/" => "after/path/"
 
 comment:
   layout: "reach, diff, flags, files"
