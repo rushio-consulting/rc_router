@@ -16,12 +16,8 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: 'stable'
-    - name: Log env
-      run: env
-    - name: Log fake credentials
-      run: echo $PUB_CREDENTIALS
     - name: Add credentials
-      run: echo $PUB_CREDENTIALS > /opt/hostedtoolcache/flutter/1.9.1-hotfix.2-stable/x64/.pub-cache/credentials.json
+      run: echo ${{secrets.PUB_CREDENTIALS}} > /opt/hostedtoolcache/flutter/1.9.1-hotfix.2-stable/x64/.pub-cache/credentials.json
     - name: Publish
       run: flutter pub pub publish --force
 
