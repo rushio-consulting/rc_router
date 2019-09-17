@@ -7,17 +7,19 @@ on:
 jobs:
   flutter:
     runs-on: ubuntu-latest
-    container:
-      image:  google/dart:latest
-      
+
     steps:
     - uses: actions/checkout@v1
-    - name: PWD
-      run: pwd
-    - name: Create folder
-      run: mkdir ~/.pub-cache
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+    - name: Flutter pub get
+      run: flutter packages get
     - name: Add credentials
       run: echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
     - name: Publish
-      run: pub publish --force
+      run: flutter pub pub publish --force
 
