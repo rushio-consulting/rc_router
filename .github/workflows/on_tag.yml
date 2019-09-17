@@ -12,6 +12,8 @@ jobs:
       
     steps:
     - uses: actions/checkout@v1
+    - name: PWD
+      run: pwd
     - name: Create folder
       run: mkdir ~/.pub-cache
     - name: Add credentials
