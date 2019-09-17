@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/rushio-consulting/rc_router/branch/master/graph/badge.svg)](https://codecov.io/gh/rushio-consulting/rc_router)
+
 # rc_router
 
 A simple but powerful router for Flutter

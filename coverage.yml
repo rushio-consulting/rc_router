@@ -1,0 +1,14 @@
+coverage:
+  status:
+    # pull-requests only
+    patch:
+      default:
+        threshold: 0.1%
+
+ignore:
+  - "lib/src/**/*.g.dart"
+
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: new
