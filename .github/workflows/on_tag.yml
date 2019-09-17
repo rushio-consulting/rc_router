@@ -1,0 +1,19 @@
+name: On release
+
+on: 
+  release:
+    types: published
+
+jobs:
+  flutter:
+    runs-on: ubuntu-latest
+    container:
+      image:  google/dart:latest
+      
+    steps:
+    - uses: actions/checkout@v1
+    - name: Add credentials
+      run: echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
+    - name: Publish
+      run: pub publish --dry-run
+

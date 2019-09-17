@@ -1,7 +1,6 @@
 library rc_router;
 
 import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 
 typedef PageRoute NotFoundRouteFactory(RouteSettings routeSettings);

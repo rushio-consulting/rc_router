@@ -1,8 +1,8 @@
 name: rc_router
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
+author: Kevin Segaud <kevin@rushio-consulting.fr>
+homepage: https://rushio-consulting.fr
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^3.0.0
+  pedantic: ^1.8.0+1
 
 dev_dependencies:
   flutter_test:
