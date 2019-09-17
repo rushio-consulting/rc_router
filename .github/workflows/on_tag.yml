@@ -26,8 +26,6 @@ jobs:
       run: echo $HOME
     - name: ls $HOME/
       run: ls -la $HOME/
-    - name: ls $HOME/.flutter/
-      run: ls -la $HOME/.flutter/
     - name: ls $HOME/work/
       run: ls -la $HOME/work/
     - name: try find .pub-cache folder
