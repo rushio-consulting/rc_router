@@ -39,11 +39,6 @@ class RcRouteParameters {
     @required this.pathParameters,
     @required this.queryParameters,
   });
-
-  void clear() {
-    pathParameters.clear();
-    queryParameters.clear();
-  }
 }
 
 typedef Route RcRouteBuilder(RouteSettings routeSettings);
