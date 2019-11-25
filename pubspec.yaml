@@ -1,7 +1,6 @@
 name: rc_router
-description: A new Flutter package project.
+description: A simple but powerful Flutter router.
 version: 0.1.0
-author: Kevin Segaud <kevin@rushio-consulting.fr>
 homepage: https://rushio-consulting.fr
 
 environment:
