@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:provider/provider.dart';
 
 import 'package:rc_router/rc_router.dart';
 
@@ -154,5 +156,50 @@ void main() {
 
       expect(find.text('/'), findsOneWidget);
     });
+
+    testWidgets('get parameters', (widgetTester) async {
+      final rcRoutes = RcRoutes(
+        routes: [
+          ExampleRoute(
+            path: '/',
+            child: Scaffold(
+              body: Text('/'),
+            ),
+          ),
+          ExampleRoute(
+            path: '/:id',
+            child: Home(),
+          ),
+        ],
+      );
+      final navigator = GlobalKey<NavigatorState>();
+
+      await widgetTester.pumpWidget(
+        MaterialApp(
+          navigatorKey: navigator,
+          onGenerateRoute: rcRoutes.onGeneratedRoute,
+        ),
+      );
+      unawaited(navigator.currentState.pushNamed('/test?key=value'));
+      await widgetTester.pumpAndSettle();
+
+      expect(find.text('test'), findsOneWidget);
+      expect(find.text('value'), findsOneWidget);
+    });
   });
+}
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final routeParams = Provider.of<RcRouteParameters>(context, listen: false);
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Text('${routeParams.pathParameters['id']}'),
+          Text('${routeParams.queryParameters['key']}'),
+        ],
+      ),
+    );
+  }
 }

@@ -30,8 +30,8 @@ class GrettingsRoute extends RcRoute {
 
   @override
   Widget build(BuildContext context) {
-    final routeParams = Provider.of<RcRouteParams>(context);
-    final name = routeParams.pathParams['name'] ?? 'anonymous';
+    final routeParams = Provider.of<RcRouteParameters>(context);
+    final name = routeParams.pathParameters['name'] ?? 'anonymous';
     return Provider<String>.value(
       value: name,
       child: WelcomePage(),
@@ -41,7 +41,7 @@ class GrettingsRoute extends RcRoute {
   @override
   Route routeBuilder(RouteSettings routeSettings) {
     return MaterialPageRoute(
-      builder: (c) => handle(c),
+      builder: (c) => handle(context: c, routeSettings: routeSettings),
       settings: routeSettings,
     );
   }

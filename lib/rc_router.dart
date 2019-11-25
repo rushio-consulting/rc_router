@@ -29,15 +29,16 @@ class RcRoutes {
   }
 }
 
-class RcRouteParams {
-  Uri path;
-  final Map<String, String> pathParams = {};
-  final Map<String, String> queryParams = {};
+class RcRouteParameters {
+  final Uri path;
+  final Map<String, String> pathParameters;
+  final Map<String, String> queryParameters;
 
-  void clear() {
-    pathParams.clear();
-    queryParams.clear();
-  }
+  RcRouteParameters({
+    @required this.path,
+    @required this.pathParameters,
+    @required this.queryParameters,
+  });
 }
 
 typedef Route RcRouteBuilder(RouteSettings routeSettings);
@@ -66,31 +67,52 @@ abstract class RcRoute extends StatelessWidget {
   }
 
   final String _path;
-  final RcRouteParams routeParams;
 
-  RcRoute({@required String path})
-      : this.routeParams = RcRouteParams(),
-        this._path = path;
+  RcRoute({@required String path}) : this._path = path;
 
   String get path => _path;
 
   Widget build(BuildContext context);
 
-  Widget handle(BuildContext context) {
-    return Provider<RcRouteParams>.value(
-      value: routeParams,
-      child: Builder(
-        builder: (c) {
-          return build(c);
-        },
-      ),
+  Widget handle(
+      {@required BuildContext context, @required RouteSettings routeSettings}) {
+    final routeParameters = getRouteParameters(routeSettings.name);
+    return Provider<RcRouteParameters>.value(
+      value: routeParameters,
+      child: Builder(builder: (c) => build(c)),
     );
   }
 
   Route routeBuilder(RouteSettings routeSettings) {
     return PageRouteBuilder(
-      pageBuilder: (c, _, __) => handle(c),
+      pageBuilder: (c, _, __) {
+        return handle(
+          context: c,
+          routeSettings: routeSettings,
+        );
+      },
       settings: routeSettings,
+    );
+  }
+
+  @visibleForTesting
+  RcRouteParameters getRouteParameters(String routeName) {
+    final pathParameters = <String, String>{};
+    final pathUri = Uri.parse(routeName);
+    final uri = Uri.parse(path);
+    for (int i = 0; i < pathUri.pathSegments.length; i++) {
+      if (uri.pathSegments.length <= i) {
+        break;
+      }
+      if (uri.pathSegments[i].startsWith(':')) {
+        final key = uri.pathSegments[i].substring(1);
+        pathParameters[key] = pathUri.pathSegments[i];
+      }
+    }
+    return RcRouteParameters(
+      path: pathUri,
+      pathParameters: pathParameters,
+      queryParameters: pathUri.queryParameters,
     );
   }
 
@@ -105,21 +127,15 @@ abstract class RcRoute extends StatelessWidget {
         break;
       }
       if (uri.pathSegments[i].startsWith(':')) {
-        final key = uri.pathSegments[i].substring(1);
-        routeParams.pathParams[key] = pathUri.pathSegments[i];
+        continue;
       } else if (pathUri.pathSegments[i] != uri.pathSegments[i]) {
         isValid = false;
         break;
       }
     }
     if (isValid) {
-      routeParams.path = pathUri;
-      routeParams.queryParams
-        ..clear()
-        ..addAll(pathUri.queryParameters);
       return true;
     }
-    routeParams.clear();
     return false;
   }
 }
