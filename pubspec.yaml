@@ -1,6 +1,6 @@
 name: rc_router
 description: A simple but powerful Flutter router.
-version: 0.1.0
+version: 0.2.0
 homepage: https://rushio-consulting.fr
 
 environment:
