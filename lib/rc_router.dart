@@ -33,11 +33,13 @@ class RcRouteParameters {
   final Uri path;
   final Map<String, String> pathParameters;
   final Map<String, String> queryParameters;
+  final Object arguments;
 
   RcRouteParameters({
     @required this.path,
     @required this.pathParameters,
     @required this.queryParameters,
+    this.arguments,
   });
 }
 
@@ -76,7 +78,8 @@ abstract class RcRoute extends StatelessWidget {
 
   Widget handle(
       {@required BuildContext context, @required RouteSettings routeSettings}) {
-    final routeParameters = getRouteParameters(routeSettings.name);
+    final routeParameters =
+        getRouteParameters(routeSettings.name, routeSettings.arguments);
     return Provider<RcRouteParameters>.value(
       value: routeParameters,
       child: Builder(builder: (c) => build(c)),
@@ -96,7 +99,7 @@ abstract class RcRoute extends StatelessWidget {
   }
 
   @visibleForTesting
-  RcRouteParameters getRouteParameters(String routeName) {
+  RcRouteParameters getRouteParameters(String routeName, Object arguments) {
     final pathParameters = <String, String>{};
     final pathUri = Uri.parse(routeName);
     final uri = Uri.parse(path);
@@ -113,6 +116,7 @@ abstract class RcRoute extends StatelessWidget {
       path: pathUri,
       pathParameters: pathParameters,
       queryParameters: pathUri.queryParameters,
+      arguments: arguments,
     );
   }
 
