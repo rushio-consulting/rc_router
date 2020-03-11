@@ -1,3 +1,7 @@
+## [0.3.0] 11/03/2020
+
+- update provider to version 4.x.x
+
 ## [0.2.0] 09/12/2019
 
 - add arguments to RcRouteParameters that match the RouteSettings.arguments
