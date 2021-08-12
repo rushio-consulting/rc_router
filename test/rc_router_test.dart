@@ -80,7 +80,7 @@ void main() {
   group('RcRoutes', () {
     group('valid', () {
       test('empty', () {
-        final rcRoutes = RcRoutes(routes: null);
+        final rcRoutes = RcRoutes(routes: const <RcRoute>[]);
 
         final route =
             rcRoutes.onGeneratedRoute(RouteSettings(name: '/example'));
@@ -180,7 +180,7 @@ void main() {
           onGenerateRoute: rcRoutes.onGeneratedRoute,
         ),
       );
-      unawaited(navigator.currentState.pushNamed('/test?key=value'));
+      unawaited(navigator.currentState!.pushNamed('/test?key=value'));
       await widgetTester.pumpAndSettle();
 
       expect(find.text('test'), findsOneWidget);
