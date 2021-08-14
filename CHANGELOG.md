@@ -1,4 +1,4 @@
-## [0.4.0] 12/08/2021
+## [1.0.0] 14/08/2021
 
 - update project to support null-safety
 
