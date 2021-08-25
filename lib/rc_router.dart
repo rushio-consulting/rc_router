@@ -47,7 +47,7 @@ typedef RcRouteBuilder = Route Function(RouteSettings routeSettings);
 abstract class RcRoute extends StatelessWidget {
   /// helper to generate Url from the [path] combined with [pathParams] and [queryParams]
   static String generateRoute(String path,
-      {Map<String, String>? pathParams, Map<String, String>? queryParams}) {
+      {Map<String, String>? pathParams, Map<String, String?>? queryParams}) {
     pathParams ??= {};
     queryParams ??= {};
     var _path = path;
