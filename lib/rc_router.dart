@@ -69,7 +69,9 @@ abstract class RcRoute extends StatelessWidget {
 
   final String _path;
 
-  RcRoute({required String path}) : _path = path;
+  const RcRoute({Key? key, required String path})
+      : _path = path,
+        super(key: key);
 
   String get path => _path;
 

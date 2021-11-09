@@ -32,8 +32,8 @@ void main() {
 
     group('valid', () {
       test('simple', () {
-        final path = '/example';
-        final route = ExampleRoute(
+        const path = '/example';
+        const route = ExampleRoute(
           path: path,
         );
         final match = route.routeNameMatchPath(path);
@@ -41,7 +41,7 @@ void main() {
       });
 
       test('with path params', () {
-        final route = ExampleRoute(
+        const route = ExampleRoute(
           path: '/example/:withPathParams',
         );
         final match = route.routeNameMatchPath('/example/12');
@@ -49,7 +49,7 @@ void main() {
       });
 
       test('with query params', () {
-        final route = ExampleRoute(
+        const route = ExampleRoute(
           path: '/example',
         );
         final match = route.routeNameMatchPath('/example?a=a');
@@ -57,7 +57,7 @@ void main() {
       });
 
       test('all', () {
-        final route = ExampleRoute(
+        const route = ExampleRoute(
           path: '/example/:withPathParams',
         );
         final match = route.routeNameMatchPath('/example/12?a=a');
@@ -67,8 +67,8 @@ void main() {
 
     group('invalid', () {
       test('simple', () {
-        final path = '/example';
-        final route = ExampleRoute(
+        const path = '/example';
+        const route = ExampleRoute(
           path: path,
         );
         final match = route.routeNameMatchPath('/toto');
@@ -83,12 +83,12 @@ void main() {
         final rcRoutes = RcRoutes(routes: const <RcRoute>[]);
 
         final route =
-            rcRoutes.onGeneratedRoute(RouteSettings(name: '/example'));
+            rcRoutes.onGeneratedRoute(const RouteSettings(name: '/example'));
         expect(route, isNull);
       });
       test('simple', () {
         final rcRoutes = RcRoutes(
-          routes: [
+          routes: const [
             ExampleRoute(
               path: '/example',
             ),
@@ -96,7 +96,7 @@ void main() {
         );
 
         final route =
-            rcRoutes.onGeneratedRoute(RouteSettings(name: '/example'));
+            rcRoutes.onGeneratedRoute(const RouteSettings(name: '/example'));
         expect(route, isNotNull);
       });
     });
@@ -104,20 +104,21 @@ void main() {
     group('invalid', () {
       test('simple', () {
         final rcRoutes = RcRoutes(
-          routes: [
+          routes: const [
             ExampleRoute(
               path: '/example',
             ),
           ],
         );
 
-        final route = rcRoutes.onGeneratedRoute(RouteSettings(name: '/toto'));
+        final route =
+            rcRoutes.onGeneratedRoute(const RouteSettings(name: '/toto'));
         expect(route, isNull);
       });
 
       test('fallback to not found', () {
         final rcRoutes = RcRoutes(
-          routes: [
+          routes: const [
             ExampleRoute(
               path: '/example',
             ),
@@ -128,7 +129,8 @@ void main() {
             );
           },
         );
-        final route = rcRoutes.onGeneratedRoute(RouteSettings(name: '/toto'));
+        final route =
+            rcRoutes.onGeneratedRoute(const RouteSettings(name: '/toto'));
         expect(route, isNotNull);
       });
     });
@@ -137,7 +139,7 @@ void main() {
   group('widgets', () {
     testWidgets('show good widget', (widgetTester) async {
       final rcRoutes = RcRoutes(
-        routes: [
+        routes: const [
           ExampleRoute(
             path: '/',
             child: Scaffold(
@@ -159,7 +161,7 @@ void main() {
 
     testWidgets('get parameters', (widgetTester) async {
       final rcRoutes = RcRoutes(
-        routes: [
+        routes: const [
           ExampleRoute(
             path: '/',
             child: Scaffold(
@@ -190,6 +192,8 @@ void main() {
 }
 
 class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final routeParams = Provider.of<RcRouteParameters>(context, listen: false);

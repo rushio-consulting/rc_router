@@ -5,10 +5,11 @@ import 'package:rc_router/rc_router.dart';
 class ExampleRoute extends RcRoute {
   final Widget child;
 
-  ExampleRoute({
+  const ExampleRoute({
+    Key? key,
     required String path,
     this.child = const SizedBox.shrink(),
-  }) : super(path: path);
+  }) : super(path: path, key: key);
 
   @override
   Widget build(BuildContext context) {
