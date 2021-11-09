@@ -4,7 +4,7 @@ import 'package:rc_router/rc_router.dart';
 import 'package:rc_router_example/src/routes/routes.dart';
 
 class WelcomePage extends StatefulWidget {
-  WelcomePage({Key key}) : super(key: key);
+  WelcomePage({Key? key}) : super(key: key);
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
@@ -31,18 +31,16 @@ class _WelcomePageState extends State<WelcomePage> {
         child: Text('Hello, $name'),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.new_releases),
         onPressed: () {
           print(RcRoute.generateRoute(
             GrettingsRoute.routePath,
             pathParams: {'name': 'kevin'},
           ));
           Navigator.of(context).pushNamed(
-            GrettingsRoute.generateRoute(
-              'kevin'
-            ),
+            GrettingsRoute.generateRoute('kevin'),
           );
         },
+        child: Icon(Icons.new_releases),
       ),
     );
   }

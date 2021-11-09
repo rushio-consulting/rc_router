@@ -8,7 +8,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  RcRoutes rcRoutes;
+  late final RcRoutes rcRoutes;
 
   @override
   void initState() {

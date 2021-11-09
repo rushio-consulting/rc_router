@@ -3,27 +3,26 @@ library rc_router;
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-typedef PageRoute NotFoundRouteFactory(RouteSettings routeSettings);
+typedef NotFoundRouteFactory = PageRoute Function(RouteSettings routeSettings);
 
 class RcRoutes {
-  final NotFoundRouteFactory notFoundRoute;
+  final NotFoundRouteFactory? notFoundRoute;
   final List<RcRoute> routes;
 
-  RcRoutes({this.notFoundRoute, @required List<RcRoute> routes})
-      : this.routes = routes ?? [];
+  RcRoutes({this.notFoundRoute, required this.routes});
 
   /// Generate the route based on [routeSettings]
   /// If a valid route is found in [routes] it will return it
   /// Else if [notFoundRoute] exist it will show it
   /// Else return null
-  Route onGeneratedRoute(RouteSettings routeSettings) {
+  Route? onGeneratedRoute(RouteSettings routeSettings) {
     for (final route in routes) {
       if (route.routeNameMatchPath(routeSettings.name)) {
         return route.routeBuilder(routeSettings);
       }
     }
     if (notFoundRoute != null) {
-      return notFoundRoute(routeSettings);
+      return notFoundRoute!(routeSettings);
     }
     return null;
   }
@@ -33,30 +32,30 @@ class RcRouteParameters {
   final Uri path;
   final Map<String, String> pathParameters;
   final Map<String, String> queryParameters;
-  final Object arguments;
+  final Object? arguments;
 
   RcRouteParameters({
-    @required this.path,
-    @required this.pathParameters,
-    @required this.queryParameters,
+    required this.path,
+    required this.pathParameters,
+    required this.queryParameters,
     this.arguments,
   });
 }
 
-typedef Route RcRouteBuilder(RouteSettings routeSettings);
+typedef RcRouteBuilder = Route Function(RouteSettings routeSettings);
 
 abstract class RcRoute extends StatelessWidget {
   /// helper to generate Url from the [path] combined with [pathParams] and [queryParams]
   static String generateRoute(String path,
-      {Map<String, String> pathParams, Map<String, String> queryParams}) {
+      {Map<String, String>? pathParams, Map<String, String?>? queryParams}) {
     pathParams ??= {};
     queryParams ??= {};
-    String _path = path;
+    var _path = path;
     for (final key in pathParams.keys) {
-      _path = _path.replaceFirst(':$key', pathParams[key]);
+      _path = _path.replaceFirst(':$key', pathParams[key]!);
     }
     final sb = StringBuffer();
-    for (final key in queryParams?.keys) {
+    for (final key in queryParams.keys) {
       sb.write('$key=${queryParams[key]}');
       if (key != queryParams.keys.last) {
         sb.write('&');
@@ -70,16 +69,23 @@ abstract class RcRoute extends StatelessWidget {
 
   final String _path;
 
-  RcRoute({@required String path}) : this._path = path;
+  const RcRoute({Key? key, required String path})
+      : _path = path,
+        super(key: key);
 
   String get path => _path;
 
-  Widget build(BuildContext context);
+  // ignore: annotate_overrides
+  Widget build(BuildContext context); // should we add override annotation ?
 
   Widget handle(
-      {@required BuildContext context, @required RouteSettings routeSettings}) {
+      {required BuildContext context, required RouteSettings routeSettings}) {
+    final _routeName = routeSettings.name;
+    if (_routeName == null) {
+      throw UnimplementedError('anonymous routes not implemented');
+    }
     final routeParameters =
-        getRouteParameters(routeSettings.name, routeSettings.arguments);
+        getRouteParameters(_routeName, routeSettings.arguments);
     return Provider<RcRouteParameters>.value(
       value: routeParameters,
       child: Builder(builder: (c) => build(c)),
@@ -99,11 +105,11 @@ abstract class RcRoute extends StatelessWidget {
   }
 
   @visibleForTesting
-  RcRouteParameters getRouteParameters(String routeName, Object arguments) {
+  RcRouteParameters getRouteParameters(String routeName, Object? arguments) {
     final pathParameters = <String, String>{};
     final pathUri = Uri.parse(routeName);
     final uri = Uri.parse(path);
-    for (int i = 0; i < pathUri.pathSegments.length; i++) {
+    for (var i = 0; i < pathUri.pathSegments.length; i++) {
       if (uri.pathSegments.length <= i) {
         break;
       }
@@ -121,11 +127,14 @@ abstract class RcRoute extends StatelessWidget {
   }
 
   @visibleForTesting
-  bool routeNameMatchPath(String routeName) {
+  bool routeNameMatchPath(String? routeName) {
+    if (routeName == null) {
+      return false;
+    }
     final pathUri = Uri.parse(routeName);
     final uri = Uri.parse(path);
-    bool isValid = pathUri.pathSegments.length == uri.pathSegments.length;
-    for (int i = 0; i < pathUri.pathSegments.length; i++) {
+    var isValid = pathUri.pathSegments.length == uri.pathSegments.length;
+    for (var i = 0; i < pathUri.pathSegments.length; i++) {
       if (uri.pathSegments.length <= i) {
         isValid = false;
         break;

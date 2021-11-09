@@ -1,3 +1,7 @@
+## [1.0.0] 14/08/2021
+
+- update project to support null-safety
+
 ## [0.3.0] 11/03/2020
 
 - update provider to version 4.x.x
